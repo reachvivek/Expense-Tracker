@@ -58,6 +58,15 @@ function editExpense(event){
         let amount=amountInput.value
         let desc=descInput.value
         let catg=catgInput.value
+        if (amount=="" || amount==0 || isNaN(amount) || parseFloat(amount)<1){
+            alert("Enter a valid amount!")
+            return
+        }
+    
+        else if (desc=="" || catg==""){
+            alert("Enter valid description and category!")
+            return
+        }
         let expenseDetails={
             amount:amount,
             desc:desc,
