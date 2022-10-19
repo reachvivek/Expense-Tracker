@@ -4,6 +4,16 @@ function addExpense(){
     let desc=descInput.value
     let catg=catgInput.value
 
+    if (amount=="" || amount==0 || isNaN(amount) || parseFloat(amount)<1){
+        alert("Enter a valid amount!")
+        return
+    }
+
+    else if (desc=="" || catg==""){
+        alert("Enter valid description and category!")
+        return
+    }
+
     let expensesArray=JSON.parse(localStorage.getItem('allExpenses'))
     if (!expensesArray || expensesArray.length==0 || expensesArray==undefined){
         expensesArray=[{
@@ -123,7 +133,3 @@ let editBtn=document.querySelectorAll('.edit-btn')
 for (let i=0; i<delBtn.length; i++){
     editBtn[i].addEventListener('click', editExpense)
 }
-
-
-
-
