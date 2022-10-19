@@ -23,13 +23,17 @@ function addExpense(){
         expensesArray.push(expenseDetails)
         localStorage.removeItem('allExpenses')
         localStorage.setItem('allExpenses', JSON.stringify(expensesArray))
-        location.reload
+        location.reload()
     }
 }
 
 //function for Deleting Expense
 function deleteExpense(event){
-    alert(event.target.id)
+    let expensesArray=JSON.parse(localStorage.getItem('allExpenses'))
+    expensesArray.splice(event.target.id, 1)
+    localStorage.removeItem('allExpenses')
+    localStorage.setItem('allExpenses', JSON.stringify(expensesArray))
+    location.reload()
 }
 
 
@@ -77,10 +81,18 @@ let addBtn=document.getElementById('addBtn')
 
 //Event Listeners
 addBtn.addEventListener('click', addExpense)
-delBtn.addEventListener('click' deleteExpense)
 
 //Display the List of Expenses
 displayList()
+
+let delBtn=document.querySelectorAll('.delete-btn')
+for (let i=0; i<delBtn.length; i++){
+    delBtn[i].addEventListener('click', deleteExpense)
+}
+let editBtn=document.querySelectorAll('.edit-btn')
+for (let i=0; i<delBtn.length; i++){
+    editBtn[i].addEventListener('click', deleteExpense)
+}
 
 
 
