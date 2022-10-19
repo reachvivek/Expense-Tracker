@@ -36,15 +36,44 @@ function deleteExpense(event){
     location.reload()
 }
 
+function editExpense(event){
+    addBtn.removeEventListener('click', addExpense)
+    addBtn.addEventListener('click', update)
+    let expensesArray=JSON.parse(localStorage.getItem('allExpenses'))
+    amountInput.value=expensesArray[event.target.id].amount
+    descInput.value=expensesArray[event.target.id].desc
+    catgInput.value=expensesArray[event.target.id].catg
+    
+    function update(){
+        let amount=amountInput.value
+        let desc=descInput.value
+        let catg=catgInput.value
+        let expenseDetails={
+            amount:amount,
+            desc:desc,
+            catg:catg
+        }
+        localStorage.removeItem('allExpenses')
+        expensesArray[event.target.id]=expenseDetails
+        localStorage.setItem('allExpenses', JSON.stringify(expensesArray))
+        addBtn.removeEventListener('click', update)
+        location.reload()
+    }
+    
+}
+
 
 function displayList() {
     let listGroup=document.getElementById('list')
     let expensesArray=JSON.parse(localStorage.getItem('allExpenses'))
     if(!expensesArray || expensesArray.length==0 || expensesArray==undefined){
+        document.querySelector('h3').style.visibility="hidden"
         return
     }
     else{
+        let total=0
         expensesArray.map((expenseDetails, index)=>{
+            total+=parseFloat(expenseDetails.amount)
             let listItem=document.createElement('li')
             let span=document.createElement('span')
             let amountItem=document.createTextNode(`-₹${expenseDetails.amount}`)
@@ -67,6 +96,7 @@ function displayList() {
             listItem.append(editBtn)
             listGroup.appendChild(listItem)
         })
+        document.getElementById('money-minus').textContent=`-₹${parseFloat(total)}`
     }
 }
 
@@ -91,7 +121,7 @@ for (let i=0; i<delBtn.length; i++){
 }
 let editBtn=document.querySelectorAll('.edit-btn')
 for (let i=0; i<delBtn.length; i++){
-    editBtn[i].addEventListener('click', deleteExpense)
+    editBtn[i].addEventListener('click', editExpense)
 }
 
 
