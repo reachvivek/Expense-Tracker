@@ -61,6 +61,7 @@ h4 {
   box-shadow: var(--box-shadow);
   padding: 20px;
   display: flex;
+  /* flex-direction: row; */
   align-self: center;
   align-items: center;
   justify-content: center;
