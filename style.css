@@ -67,6 +67,7 @@ h4 {
   justify-content: center;
   margin: 10px 0;
   width: 30vw;
+  border-radius: 10px;
 }
 
 .inc-exp-container > div {
@@ -100,7 +101,7 @@ label {
 input[type='text'],
 input[type='number'] {
   border: 1px solid #dedede;
-  border-radius: 2px;
+  border-radius: 5px;
   display: block;
   font-size: 16px;
   padding: 10px;
@@ -113,6 +114,7 @@ input[type='number'] {
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
+  border-radius: 5px;
   display: block;
   font-size: 16px;
   margin: 10px 0 30px;
@@ -120,6 +122,10 @@ input[type='number'] {
   width: 40%;
   margin-top: 40px;
   margin-left: 5px;
+}
+
+.btn:hover{
+  background-color: #7d77ff;
 }
 
 .btn:focus,
@@ -139,6 +145,7 @@ input[type='number'] {
 
 .list li {
     width: 100%;
+    border-radius: 5px;
     background-color: #fff;
     box-shadow: var(--box-shadow);
     color: #333;
@@ -162,13 +169,14 @@ input[type='number'] {
   cursor: pointer;
   background-color: #e74c3c;
   border: 0;
+  border-radius: 5px;
   color: #fff;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 35px;
   padding: 2px 5px;
   position: absolute;
   top: 50%;
-  right: -6%;
+  right: -6.5%;
   transform: translate(100%, -50%);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -176,15 +184,16 @@ input[type='number'] {
 
 .edit-btn {
     cursor: pointer;
-    background-color: blue;
+    background-color: #efa945;
     border: 0;
+    border-radius: 5px;
     color: #fff;
     font-size: 20px;
-    line-height: 20px;
+    line-height: 35px;
     padding: 2px 5px;
     position: absolute;
     top: 50%;
-    right: 0;
+    right: -1.5%;
     transform: translate(100%, -50%);
     opacity: 0;
     transition: opacity 0.5s ease;

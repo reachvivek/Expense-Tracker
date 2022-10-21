@@ -1,5 +1,5 @@
 //Global variables
-var url="https://crudcrud.com/api/a40f591970484ade95b5925868d4073e/expensesData"
+var url="https://crudcrud.com/api/1d991dc36b984e82bce3c605e7e1a023/expensesData"
 let amountInput=document.getElementById('amount')
 let descInput=document.getElementById('desc')
 let catgInput=document.getElementById('catg')
@@ -10,7 +10,7 @@ let addBtn=document.getElementById('addBtn')
 //Event Listeners
 addBtn.addEventListener('click', addExpense)
 //function for Adding Expense
-function addExpense(e){
+async function addExpense(e){
     e.preventDefault()
     let amount=amountInput.value
     let desc=descInput.value
@@ -26,7 +26,7 @@ function addExpense(e){
         return
     }
 
-    axios({
+    await axios({
         method: 'post',
         url: url,
         data: {
@@ -34,30 +34,25 @@ function addExpense(e){
             desc: desc,
             catg:catg
         }
-    }).then(res=>{
-        if (res.status==201){
-            location.reload()
-        }
-        else{
-            console.log(res)
-        }
-    }).catch(err=>console.log(err))
+    })
+
+    location.reload()
 }
 
 //function for Deleting Expense
-function deleteExpense(event){
+async function deleteExpense(event){
     event.preventDefault()
-    axios({
-        method: 'delete',
-        url: `${url}/${event.target.id}`
-    }).then(res=>{
-        if (res.status==200){
-            location.reload()
-        }
-        else{
-            console.log(res)
-        }
-    }).catch(err=>console.log(err))
+
+    try{
+        await axios({
+            method: 'delete',
+            url: `${url}/${event.target.id+1}`
+        })
+        location.reload()
+    }
+    catch(err){
+        console.log(err)
+    }
 }
 
 function editExpense(event){
@@ -66,17 +61,20 @@ function editExpense(event){
     addBtn.removeEventListener('click', addExpense)
     addBtn.addEventListener('click', update)
     addBtn.innerHTML="Modify"
-    axios({
+    let getRequest=async()=>{
+        await axios({
         method: 'get',
         url: `${url}/${event.target.id}`
-    }).then(res=>{
-        amountInput.value=res.data.amount
-        descInput.value=res.data.desc
-        catgInput.value=res.data.catg
-    }).catch(err=>console.log(err))
+        }).then(res=>{
+            amountInput.value=res.data.amount
+            descInput.value=res.data.desc
+            catgInput.value=res.data.catg
+        }).catch(err=>console.log(err))
+    }
+
+    getRequest()
     
-    
-    function update(e){
+    async function update(e){
         e.preventDefault()
         let amount=amountInput.value
         let desc=descInput.value
@@ -90,7 +88,7 @@ function editExpense(event){
             alert("Enter valid description and category!")
             return
         }
-        axios({
+        await axios({
             method: 'put',
             url: `${url}/${id}`,
             data: {
@@ -98,13 +96,16 @@ function editExpense(event){
                 desc:desc,
                 catg:catg
             }
-        }).then(res=>{
-            if (res.status==200){
-                location.reload()
-            }else{
-                console.log(res)
-            }
-        }).catch(err=>console.log(err))
+        })
+       
+        location.reload()
+        // .then(res=>{
+        //     if (res.status==200){
+        //         location.reload()
+        //     }else{
+        //         console.log(res)
+        //     }
+        // }).catch(err=>console.log(err))
     }
 }
 
@@ -112,7 +113,7 @@ function editExpense(event){
 function displayList() {
     let listGroup=document.getElementById('list')
 
-    axios({
+    let getRequest=async()=>await axios({
         method: 'get',
         url: url
     }).then(res=>{
@@ -126,17 +127,15 @@ function displayList() {
             expenseDetails.amount>0?inflow+=parseFloat(expenseDetails.amount):outflow+=parseFloat(expenseDetails.amount)
             let listItem=document.createElement('li')
             let span=document.createElement('span')
-            let amountItem=document.createTextNode(expenseDetails.amount>0?`+₹${expenseDetails.amount}`:`-₹${expenseDetails.amount*-1}`)
+            let amountItem=document.createTextNode(expenseDetails.amount>0?`+₹${(expenseDetails.amount*1).toLocaleString('en-IN')}`:`-₹${(expenseDetails.amount*-1).toLocaleString('en-IN')}`)
             let descItem=document.createTextNode(`${expenseDetails.desc}`)
             let catgItem=document.createTextNode(`${expenseDetails.catg}`)
             let delBtn=document.createElement('button')
             delBtn.className="delete-btn"
-            delBtn.id=expenseDetails._id
-            delBtn.append(document.createTextNode('x'))
+            delBtn.innerHTML=`<i id='${expenseDetails._id}' style='font-size:22px' class='fas'>&#xf1f8;</i>`
             let editBtn=document.createElement('button')
             editBtn.className="edit-btn"          
-            editBtn.id=expenseDetails._id
-            editBtn.append(document.createTextNode('Edit'))
+            editBtn.innerHTML=`<i id='${expenseDetails._id}' style='font-size:24px' class='far'>&#xf044;</i>`
             expenseDetails.amount>0?listItem.className="plus":listItem.className="minus";
             listItem.append(delBtn)
             listItem.append(amountItem)
@@ -156,6 +155,7 @@ function displayList() {
         }
         }
     })
+    getRequest()
 }
 
 //Display the List of Expenses
