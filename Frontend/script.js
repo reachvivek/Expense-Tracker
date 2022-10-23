@@ -1,5 +1,5 @@
 //Global variables
-var url="https://crudcrud.com/api/1d991dc36b984e82bce3c605e7e1a023/expensesData"
+var url="http://localhost:3000/expensesData"
 let amountInput=document.getElementById('amount')
 let descInput=document.getElementById('desc')
 let catgInput=document.getElementById('catg')
@@ -34,9 +34,14 @@ async function addExpense(e){
             desc: desc,
             catg:catg
         }
-    })
+    }).then((response)=>{
+        console.log(response)
+        if(response.status==201){
+            location.reload()
+        }
+    }).catch(err=>console.log(err))
 
-    location.reload()
+    
 }
 
 //function for Deleting Expense
@@ -46,7 +51,7 @@ async function deleteExpense(event){
     try{
         await axios({
             method: 'delete',
-            url: `${url}/${event.target.id+1}`
+            url: `${url}/${event.target.id}`
         })
         location.reload()
     }
@@ -117,6 +122,7 @@ function displayList() {
         method: 'get',
         url: url
     }).then(res=>{
+        console.log(res)
         if (res.data.length==0 || !res.data){
             document.querySelector('h3').style.visibility="hidden"
             return
@@ -132,10 +138,10 @@ function displayList() {
             let catgItem=document.createTextNode(`${expenseDetails.catg}`)
             let delBtn=document.createElement('button')
             delBtn.className="delete-btn"
-            delBtn.innerHTML=`<i id='${expenseDetails._id}' style='font-size:22px' class='fas'>&#xf1f8;</i>`
+            delBtn.innerHTML=`<i id='${expenseDetails.id}' style='font-size:22px' class='fas'>&#xf1f8;</i>`
             let editBtn=document.createElement('button')
             editBtn.className="edit-btn"          
-            editBtn.innerHTML=`<i id='${expenseDetails._id}' style='font-size:24px' class='far'>&#xf044;</i>`
+            editBtn.innerHTML=`<i id='${expenseDetails.id}' style='font-size:24px' class='far'>&#xf044;</i>`
             expenseDetails.amount>0?listItem.className="plus":listItem.className="minus";
             listItem.append(delBtn)
             listItem.append(amountItem)
@@ -154,7 +160,7 @@ function displayList() {
             editBtn[i].addEventListener('click', editExpense)
         }
         }
-    })
+    }).catch(err=>console.log(err))
     getRequest()
 }
 
