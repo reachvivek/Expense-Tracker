@@ -29,11 +29,14 @@ function signIn(){
         url: `${UserUrl}/${email}`,
     }).then(response=>{
         console.log(response)
-        if (response.data.password==password){
-            alert("Sign In Successful")
-            location.replace('./index.html')
+        if (response.data==""){
+            alert("Your email is not registered with us!")
+            changeForm()
+        }else if(response.data.password!==password){
+            alert("You've entered an incorrect password!")
         }else{
-            alert("Invalid Credentials")
+            alert("Sign In Successful!")
+            location.replace('./index.html')
         }
     }).catch(err=>console.log(err))
 }
