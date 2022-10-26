@@ -1,3 +1,4 @@
+var state;
 //Global variables
 var url="http://localhost:4000/expensesData"
 let amountInput=document.getElementById('amount')
@@ -6,9 +7,31 @@ let catgInput=document.getElementById('catg')
 
 //button
 let addBtn=document.getElementById('addBtn')
+let logoutBtn=document.getElementById('logout')
 
 //Event Listeners
 addBtn.addEventListener('click', addExpense)
+logoutBtn.addEventListener('click', logout)
+
+//Check if already Logged In
+function checkAuthState(){
+    state=JSON.parse(sessionStorage.getItem('auth'))
+    if (state==null||state==undefined||state==''){
+        location.replace('./auth.html')
+    }else if(state.authenticated){
+        return
+    }else{
+        location.replace('./auth.html')
+    }
+}
+
+checkAuthState()
+
+function logout(){
+    sessionStorage.removeItem('auth')
+    checkAuthState()
+}
+
 //function for Adding Expense
 async function addExpense(e){
     e.preventDefault()

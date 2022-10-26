@@ -13,6 +13,22 @@ let signUpBtn=document.getElementById("sign-up-btn")
 signUpBtn.addEventListener('click', signUp)
 signInBtn.addEventListener('click', signIn)
 
+var state;
+
+//Check if already Logged In
+function checkAuthState(){
+    state=JSON.parse(sessionStorage.getItem('auth'))
+    if (state==null||state==undefined||state==''){
+        return
+    }else if(state.authenticated){
+        location.replace('./index.html')
+    }else{
+        return
+    }
+}
+
+checkAuthState()
+
 function signIn(){
     const email=document.getElementById('email-in').value
     const password=document.getElementById('pass-in').value
@@ -43,6 +59,7 @@ function signIn(){
             changeForm()
         }else if(response.data.code==1){
             alert("Sign In Successful!")
+            sessionStorage.setItem('auth', JSON.stringify({authenticated:true, email:email}))
             location.replace('./index.html')
         }
         // if(response)

@@ -182,6 +182,14 @@ input[type='number'] {
   transition: opacity 0.3s ease;
 }
 
+#logout{
+  font-size: 2rem;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+
 .edit-btn {
     cursor: pointer;
     background-color: #efa945;
