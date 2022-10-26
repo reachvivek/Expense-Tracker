@@ -3,13 +3,17 @@ const cors=require('cors')
 const bodyParser=require('body-parser')
 const app=express();
 const sequelize=require('./util/database')
-
+const Users=require('./model/users')
+const Expenses=require('./model/expenses')
 const expensesRoutes=require('./routes/expenses');
 const authRoutes=require('./routes/users');
 
 app.use(cors())
 
 app.use(bodyParser.json({extended:false}))
+
+Users.hasMany(Expenses)
+Expenses.belongsTo(Users)
 
 app.use(expensesRoutes)
 app.use(authRoutes)

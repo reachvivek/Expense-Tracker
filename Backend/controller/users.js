@@ -1,6 +1,12 @@
 const Users=require('../model/users')
+var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
+function generateToken(email){
+    return (jwt.sign({email:email}, 'expenseTrackerToken'))
+}
+
 exports.createUser=(req, res, next)=>{
     console.log(req.body)
     bcrypt.hash(req.body.password, saltRounds).then((hash)=>{
@@ -25,7 +31,7 @@ exports.findUser=(req, res, next)=>{
         }else{
             bcrypt.compare(creds.password, response.password).then((result)=>{
                 if(result){
-                    res.status(200).send({code:1})
+                    res.status(200).send({code:1, token:generateToken(creds.email)})
                 }else{
                     res.status(200).send({code:2})
                 }

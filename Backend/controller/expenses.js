@@ -5,7 +5,7 @@ exports.showServer=(req, res, next)=>{
 }
 
 exports.getExpenses=(req, res, next)=>{
-    Expenses.findAll().then(response=>{
+    Expenses.findAll({where: {userId: req.user.id}}).then(response=>{
         res.status(200).send(response)
     })
 }
@@ -20,7 +20,8 @@ exports.addExpense=(req, res, next)=>{
     Expenses.create({
         amount: req.body.amount,
         desc: req.body.desc,
-        catg: req.body.catg
+        catg: req.body.catg,
+        userId: req.user.id
     }).then(response=>{
         res.status(201).send(response)
     }).catch(err=>console.log(err))

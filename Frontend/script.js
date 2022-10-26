@@ -18,7 +18,7 @@ function checkAuthState(){
     state=JSON.parse(sessionStorage.getItem('auth'))
     if (state==null||state==undefined||state==''){
         location.replace('./auth.html')
-    }else if(state.authenticated){
+    }else if (state.token){
         return
     }else{
         location.replace('./auth.html')
@@ -52,6 +52,7 @@ async function addExpense(e){
     await axios({
         method: 'post',
         url: url,
+        headers: {"Authorization":state.token},
         data: {
             amount: amount,
             desc: desc,
@@ -74,7 +75,7 @@ async function deleteExpense(event){
     try{
         await axios({
             method: 'delete',
-            url: `${url}/${event.target.id}`
+            url: `${url}/${event.target.id}`,
         })
         location.reload()
     }
@@ -143,7 +144,8 @@ function displayList() {
 
     let getRequest=async()=>await axios({
         method: 'get',
-        url: url
+        url: url,
+        headers: {"Authorization":state.token}
     }).then(res=>{
         console.log(res)
         if (res.data.length==0 || !res.data){
@@ -188,5 +190,5 @@ function displayList() {
 }
 
 //Display the List of Expenses
-displayList()
+window.addEventListener('DOMContentLoaded', displayList)
 
