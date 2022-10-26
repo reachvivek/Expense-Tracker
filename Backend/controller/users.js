@@ -10,3 +10,10 @@ exports.createUser=(req, res, next)=>{
         res.status(201).send(response)
     }).catch(err=>console.log(err))
 }
+
+exports.findUser=(req, res, next)=>{
+    console.log(req.params.email)
+    Users.findOne({where: {email:req.params.email}}).then(response=>{
+        res.status(200).send(response)
+    }).catch(err=>console.log(err))
+}
