@@ -1,5 +1,5 @@
 //Global variables
-var url="http://localhost:3000/expensesData"
+var url="http://localhost:4000/expensesData"
 let amountInput=document.getElementById('amount')
 let descInput=document.getElementById('desc')
 let catgInput=document.getElementById('catg')
