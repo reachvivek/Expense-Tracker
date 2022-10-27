@@ -9,9 +9,18 @@ let bContainer = document.querySelector("#b-container");
 let allButtons = document.querySelectorAll(".submit");
 let signInBtn=document.getElementById("sign-in-btn")
 let signUpBtn=document.getElementById("sign-up-btn")
+let forgotBtn=document.getElementById('forgot-password')
 
 signUpBtn.addEventListener('click', signUp)
 signInBtn.addEventListener('click', signIn)
+forgotBtn.addEventListener('click', forgotPassword)
+
+function forgotPassword(){
+    forgotBtn.style.display='none'
+    signInBtn.removeEventListener('click', signIn)
+    signInBtn.innerHTML="Reset Password"
+    document.getElementById('pass-in').style.display='none'
+}
 
 var state;
 

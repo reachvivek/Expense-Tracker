@@ -61,6 +61,7 @@ input.dark{
   transition: background-color .3s ease-in-out;
 }
 
+
 .list li.plus.dark{
   background-color: #3b4557;
   color: #fff;
@@ -123,8 +124,6 @@ h4 {
   border-radius: 10px;
   transition: background-color 1s ease-in-out;
 }
-
-
 
 .inc-exp-container > div {
   flex: 1;

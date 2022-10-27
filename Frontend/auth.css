@@ -52,6 +52,15 @@ body {
     }
 }
 
+
+.form__button{
+    cursor: pointer;
+}
+  
+.form__link{
+    cursor: pointer;
+}
+
 .container {
     display: flex;
     justify-content: center;
