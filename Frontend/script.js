@@ -1,10 +1,14 @@
 var state;
 //Global variables
 var url="http://localhost:4000/expensesData"
+let UserUrl="http://localhost:4000/users"
+var RazorPayKeyID="rzp_test_MPJj4ZO1IeYlzh"
+var RazorPayKeySecret="XW3SvSuRi3NmhYPADGtZLiqe"
+
 let amountInput=document.getElementById('amount')
 let descInput=document.getElementById('desc')
 let catgInput=document.getElementById('catg')
-
+let darkBtn=document.getElementById('premium')
 //button
 let addBtn=document.getElementById('addBtn')
 let logoutBtn=document.getElementById('logout')
@@ -12,6 +16,7 @@ let logoutBtn=document.getElementById('logout')
 //Event Listeners
 addBtn.addEventListener('click', addExpense)
 logoutBtn.addEventListener('click', logout)
+darkBtn.addEventListener('click', handlePayment)
 
 //Check if already Logged In
 function checkAuthState(){
@@ -26,6 +31,92 @@ function checkAuthState(){
 }
 
 checkAuthState()
+
+function checkPremium(){
+    axios({
+        method: 'get',
+        url: `${UserUrl}`,
+        headers:{"Authorization":state.token}
+    }).then(response=>{
+        if(response.data.isPremium){
+            isPremium()
+        }
+        else{
+            return
+        }
+    }).catch(err=>console.log(err))
+}
+
+
+
+var isPremium=()=>{
+    toggleMode()
+    darkBtn.style.visibility='hidden'
+};
+
+
+function createPremium(){
+    axios({
+        method: 'put',
+        url: `${UserUrl}`,
+        headers: {"Authorization":state.token}
+    }).then(response=>{
+        if(response.data.isPremium){
+            isPremium()
+        }
+    }).catch(err=>console.log(err))
+}
+
+function handlePayment(){
+    var options = {
+        "key": RazorPayKeyID, 
+        "amount": "500",
+        "currency": "INR",
+        "name": "Premium Membership",
+        "description": "Buy Expense Tracker Premium Membership",
+        // "order_id": state.token,
+        "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+        "handler": function (response){
+            alert("Payment was successful!")
+            createPremium()
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9999999999"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        },
+    };
+    var rzp1=new Razorpay(options)
+    rzp1.open();
+    rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+    })
+}
+
+function toggleMode(){
+    document.body.classList.add('dark')
+    document.querySelector('.inc-exp-container').classList.add('dark')
+    let inputs=document.querySelectorAll('input')
+    for (let i=0; i<inputs.length; i++){
+        inputs[i].classList.add('dark')
+    }
+    let historyItems=document.querySelectorAll('.list li')
+    for (let i=0; i<historyItems.length; i++){
+        historyItems[i].classList.add('dark')
+    }
+}
 
 function logout(){
     sessionStorage.removeItem('auth')
@@ -47,6 +138,10 @@ async function addExpense(e){
     else if (desc=="" || catg==""){
         alert("Enter valid description and category!")
         return
+    }else{
+        amountInput.value=""
+        descInput.value=""
+        catgInput.value=""
     }
 
     await axios({
@@ -61,7 +156,7 @@ async function addExpense(e){
     }).then((response)=>{
         console.log(response)
         if(response.status==201){
-            location.reload()
+            displayList()
         }
     }).catch(err=>console.log(err))
 
@@ -77,7 +172,7 @@ async function deleteExpense(event){
             method: 'delete',
             url: `${url}/${event.target.id}`,
         })
-        location.reload()
+        displayList()
     }
     catch(err){
         console.log(err)
@@ -141,7 +236,7 @@ function editExpense(event){
 
 function displayList() {
     let listGroup=document.getElementById('list')
-
+    listGroup.innerHTML=""
     let getRequest=async()=>await axios({
         method: 'get',
         url: url,
@@ -184,11 +279,14 @@ function displayList() {
             delBtn[i].addEventListener('click', deleteExpense)
             editBtn[i].addEventListener('click', editExpense)
         }
+        checkPremium()
         }
     }).catch(err=>console.log(err))
     getRequest()
 }
 
 //Display the List of Expenses
-window.addEventListener('DOMContentLoaded', displayList)
+window.addEventListener('DOMContentLoaded', ()=>{
+    displayList()
+})
 
