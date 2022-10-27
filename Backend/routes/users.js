@@ -16,4 +16,8 @@ router.get('/users', authenticator.authenticate, usersController.isPremium)
 
 router.get('/forgotPassword/:email', mailer.sendMail)
 
+router.get('/resetPassword/:uuid', mailer.resetPassword)
+
+router.post('/resetPassword/:uuid', mailer.updatePassword)
+
 module.exports = router;

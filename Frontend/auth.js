@@ -34,7 +34,7 @@ function sendResetMail(){
         url: `${forgotPassUrl}${email}`
     }).then(response=>{
         if(response.data.sent==true){
-            alert("Password Reset Mail has been sent!")
+            alert("Password Reset Mail Has Been Sent!")
             location.reload()
         }
     }).catch(err=>console.log(err))

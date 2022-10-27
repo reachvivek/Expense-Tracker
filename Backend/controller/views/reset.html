@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password</title>
+    <style>
+        body{
+            width: 97vw;
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Montserrat", sans-serif;
+            font-size: 12px;
+            background-color: #ecf0f3;
+            color: #a0a5a8;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 600px;
+            height: 80%;
+            padding: 25px;
+            background-color: #ecf0f3;
+            transition: 1.25s;
+        }
+        input{
+            display: block;
+            margin: 1rem;
+            font-size: 13px;
+            letter-spacing: 0.15px;
+            width: 350px;
+            height: 40px;
+            margin: 4px 0;
+            padding-left: 25px;
+            border: none;
+            outline: none;
+            font-family: "Montserrat", sans-serif;
+            background-color: #ecf0f3;
+            transition: 0.25s ease;
+            border-radius: 8px;
+            box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #f9f9f9;
+        }
+        button{
+            display: block;
+            margin: 1rem;
+            width: 180px;
+            height: 40px;
+            border-radius: 25px;
+            margin-top: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1.15px;
+            background-color: #9c88ff;
+            color: #f9f9f9;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        h1{
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Change Password</h1>
+        <form id="reset-form" method="post">
+            <input class="pass" type="password" name="password" placeholder="New Password">
+            <input class="pass-confirm" type="password" name="confirm-password" placeholder="Confirm New Password">
+            <button>Change Password</button>
+        </form>
+    </div>
+    <script>
+        document.querySelector('button').addEventListener('click', (e)=>{
+            e.preventDefault()
+            var pass=document.querySelector('.pass').value
+            var pass2=document.querySelector('.pass-confirm').value
+            if(pass!==pass2){
+                alert("Passwords don't match!")
+                return
+            }else if(pass.length<4){
+                alert("Enter a Strong Password!")
+                return
+            }else{
+                alert('Password has been updated!')
+                var form=document.getElementById('reset-form')
+                form.submit()
+                setTimeout(()=>{
+                    location.replace('http://127.0.0.1:5500/Expense%20Tracker/Frontend/auth.html')
+                }, 3000)
+                console.log(form)         
+            }
+        })
+    </script>
+</body>
+</html>
