@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const ForgotPassword=require('../model/forgotPassword')
 const Users=require('../model/users')
 const { v4: uuidv4 } = require('uuid');
-const url="http://localhost:4000/resetPassword/"
+const url="https://expense-tracker-nodejs-app.herokuapp.com/resetPassword/"
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -54,7 +54,7 @@ exports.resetPassword=(req, res, next)=>{
         if (entry){
             res.sendFile('/views/reset.html', {root: __dirname })
         }else{
-            res.send(`<h1>"Invalid Link"</h1>`)
+            res.redirect(`https://expense-tracker-nodejs-app.herokuapp.com/`)
         }
     })
 }

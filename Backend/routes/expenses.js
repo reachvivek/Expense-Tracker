@@ -12,7 +12,7 @@ router.get('/expensesData/:pageNo', authenticator.authenticate, expensesControll
 
 router.get('/pages/:pages', expensesController.updatePages)
 
-router.get('/expensesData/:id', expensesController.getExpense)
+router.get('/expenses/:id', expensesController.getExpense)
 
 router.post('/expensesData', authenticator.authenticate, expensesController.addExpense);
 

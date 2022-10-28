@@ -79,14 +79,15 @@
 <body>
     <div class="container">
         <h1>Change Password</h1>
-        <form id="reset-form" method="post">
+        <form id="reset-form" method="post" onsubmit="validate()">
             <input class="pass" type="password" name="password" placeholder="New Password">
             <input class="pass-confirm" type="password" name="confirm-password" placeholder="Confirm New Password">
             <button>Change Password</button>
         </form>
     </div>
     <script>
-        document.querySelector('button').addEventListener('click', (e)=>{
+        document.querySelector('button').addEventListener('click', validate)
+        function validate(e){
             e.preventDefault()
             var pass=document.querySelector('.pass').value
             var pass2=document.querySelector('.pass-confirm').value
@@ -105,7 +106,7 @@
                 }, 3000)
                 console.log(form)         
             }
-        })
+        }
     </script>
 </body>
 </html>

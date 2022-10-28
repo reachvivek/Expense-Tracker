@@ -1,5 +1,5 @@
-let UserUrl="http://localhost:4000/users"
-let forgotPassUrl="http://localhost:4000/forgotPassword/"
+let UserUrl="https://expense-tracker-nodejs-app.herokuapp.com/users"
+let forgotPassUrl="https://expense-tracker-nodejs-app.herokuapp.com/forgotPassword/"
 let switchCtn = document.querySelector("#switch-cnt");
 let switchC1 = document.querySelector("#switch-c1");
 let switchC2 = document.querySelector("#switch-c2");
@@ -78,7 +78,6 @@ function signIn(){
         method: 'get',
         url: `${UserUrl}/${JSON.stringify(creds)}`,
     }).then(response=>{
-        console.log(response)
         if (response.data.code==2){
             alert("You have entered an Invalid Password!")
         }else if(response.data.code==0){
@@ -122,7 +121,6 @@ function signUp(){
             password:password
         }
     }).then(response=>{
-        console.log(response)
         if(response.data[1]==false){
             alert("You already have an account with us! Please Login...")
             changeForm()

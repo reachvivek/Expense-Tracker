@@ -1,20 +1,22 @@
 var state;
 //Global variables
-var url="http://localhost:4000/expensesData"
-var urlPages="http://localhost:4000/pages"
-var downloadUrl="http://localhost:4000/download"
-let UserUrl="http://localhost:4000/users"
+var url="https://expense-tracker-nodejs-app.herokuapp.com/expensesData"
+var editurl="https://expense-tracker-nodejs-app.herokuapp.com/expenses"
+var urlPages="https://expense-tracker-nodejs-app.herokuapp.com/pages"
+var downloadUrl="https://expense-tracker-nodejs-app.herokuapp.com/download"
+let UserUrl="https://expense-tracker-nodejs-app.herokuapp.com/users"
 var RazorPayKeyID="rzp_test_MPJj4ZO1IeYlzh"
 var RazorPayKeySecret="XW3SvSuRi3NmhYPADGtZLiqe"
 
 let amountInput=document.getElementById('amount')
 let descInput=document.getElementById('desc')
 let catgInput=document.getElementById('catg')
-let darkBtn=document.getElementById('premium')
-//button
+
+//Buttons
 let addBtn=document.getElementById('addBtn')
 let logoutBtn=document.getElementById('logout')
 let rows=document.getElementById('rows')
+let darkBtn=document.getElementById('premium')
 
 //Event Listeners
 addBtn.addEventListener('click', addExpense)
@@ -57,6 +59,8 @@ var isPremium=()=>{
     var download=document.getElementById('downloadBtn')
     download.style.display="inline-block"
     download.addEventListener('click', downloadExpenses)
+    rows.style.backgroundColor="#2c3849"
+    rows.style.color="#fff"
 };
 
 function changePages(){
@@ -83,10 +87,8 @@ function downloadExpenses(e){
         link.setAttribute('download', 'expenses.txt'); //or any other extension
         document.body.appendChild(link);
         link.click();
-        // clean up "a" element & remove ObjectURL
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
-        console.log(response)
     }).catch(err=>console.log(err))
 }
 
@@ -189,7 +191,6 @@ async function addExpense(e){
             catg:catg
         }
     }).then((response)=>{
-        console.log(response)
         if(response.status==201){
             displayList()
         }
@@ -223,7 +224,7 @@ function editExpense(event){
     let getRequest=async()=>{
         await axios({
         method: 'get',
-        url: `${url}/${event.target.id}`
+        url: `${editurl}/${event.target.id}`
         }).then(res=>{
             amountInput.value=res.data.amount
             descInput.value=res.data.desc
@@ -246,6 +247,13 @@ function editExpense(event){
         else if (desc=="" || catg==""){
             alert("Enter valid description and category!")
             return
+        }else{
+            amountInput.value=""
+            descInput.value=""
+            catgInput.value=""
+            addBtn.removeEventListener('click', update)
+            addBtn.addEventListener('click', addExpense)
+            addBtn.innerHTML="Add Expense"
         }
         await axios({
             method: 'put',
@@ -256,15 +264,7 @@ function editExpense(event){
                 catg:catg
             }
         })
-       
-        location.reload()
-        // .then(res=>{
-        //     if (res.status==200){
-        //         location.reload()
-        //     }else{
-        //         console.log(res)
-        //     }
-        // }).catch(err=>console.log(err))
+        displayList()
     }
 }
 
@@ -284,7 +284,6 @@ function displayList(e) {
         url: `${url}/${pageNo}`,
         headers: {"Authorization":state.token}
     }).then(res=>{
-        console.log(res)
         if (res.data.response==0 || !res.data.response){
             document.querySelector('h3').style.visibility="hidden"
             return
