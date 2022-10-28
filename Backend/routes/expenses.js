@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', expensesController.showServer);
 
-router.get('/expensesData', authenticator.authenticate, expensesController.getExpenses);
+router.get('/expensesData/:pageNo', authenticator.authenticate, expensesController.getExpenses);
 
 router.get('/expensesData/:id', expensesController.getExpense)
 

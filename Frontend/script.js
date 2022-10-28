@@ -256,22 +256,29 @@ function editExpense(event){
 }
 
 
-function displayList() {
+function displayList(e) {
+    let pageNo;
+    try{
+        pageNo=e.target.id
+    }
+    catch(err){
+        pageNo=1
+    }
     let listGroup=document.getElementById('list')
     listGroup.innerHTML=""
     let getRequest=async()=>await axios({
         method: 'get',
-        url: url,
+        url: `${url}/${pageNo}`,
         headers: {"Authorization":state.token}
     }).then(res=>{
         console.log(res)
-        if (res.data.length==0 || !res.data){
+        if (res.data.response==0 || !res.data.response){
             document.querySelector('h3').style.visibility="hidden"
             return
         }
         else{
             let inflow=0, outflow=0
-            res.data.map((expenseDetails)=>{
+            res.data.response.map((expenseDetails)=>{
             expenseDetails.amount>0?inflow+=parseFloat(expenseDetails.amount):outflow+=parseFloat(expenseDetails.amount)
             let listItem=document.createElement('li')
             let span=document.createElement('span')
@@ -293,6 +300,51 @@ function displayList() {
             listItem.append(editBtn)
             listGroup.appendChild(listItem)
         })
+        var buttonList=document.querySelector('.pages-container')
+        buttonList.innerHTML=""
+        if(res.data.lastPage===2){
+            if(res.data.hasPreviousPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.previousPage
+                button.id=res.data.previousPage
+                buttonList.appendChild(button)
+            }
+            let button=document.createElement('button')
+            button.innerHTML=res.data.currentPage
+            button.id=res.data.currentPage
+            buttonList.appendChild(button)
+            if(res.data.hasNextPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.nextPage
+                button.id=res.data.nextPage
+                buttonList.appendChild(button)
+            }
+        }
+        else if(res.data.lastPage>2){
+            if(res.data.hasPreviousPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.previousPage
+                button.id=res.data.previousPage
+                buttonList.appendChild(button)
+            }
+            let button=document.createElement('button')
+            button.innerHTML=res.data.currentPage
+            button.id=res.data.currentPage
+            buttonList.appendChild(button)
+            if(res.data.hasNextPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.nextPage
+                button.id=res.data.nextPage
+                buttonList.appendChild(button)
+            }
+            if(res.data.currentPage!=res.data.lastPage && res.data.nextPage!=res.data.lastPage){
+                let button=document.createElement('button')
+                button.innerHTML=res.data.lastPage
+                button.id=res.data.lastPage
+                buttonList.appendChild(button)
+            }
+        }
+        buttonList.addEventListener('click', displayList)
         document.getElementById('money-minus').textContent=`-₹${parseFloat(outflow*-1).toLocaleString('en-IN')}`
         document.getElementById('money-plus').textContent=`+₹${parseFloat(inflow).toLocaleString('en-IN')}`
         let delBtn=document.querySelectorAll('.delete-btn')

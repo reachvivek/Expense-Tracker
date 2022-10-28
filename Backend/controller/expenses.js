@@ -1,12 +1,30 @@
 const Expenses=require('../model/expenses')
-const fs=require('fs')
+const ITEMS_PER_PAGE=3
 exports.showServer=(req, res, next)=>{
     res.send("<h1>Welcome to Expense Tracker's Backend Server</h1>")
 }
 
-exports.getExpenses=(req, res, next)=>{
-    Expenses.findAll({where: {userId: req.user.id}}).then(response=>{
-        res.status(200).send(response)
+exports.getExpenses=async(req, res, next)=>{
+    var totalExpenses;
+    const page = +req.params.pageNo || 1;
+    let totalItems=Expenses.findAll({where: {userId: req.user.id}}).then(response=>{
+        totalExpenses=response.length
+    }).catch(err=>console.log(err))
+
+    await totalItems;
+
+    Expenses.findAll({where: {userId: req.user.id}, offset: (page-1)*ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE})
+    .then(response=>{
+        res.status(200).send({
+            response: response,
+            currentPage: page,
+            hasNextPage: ITEMS_PER_PAGE * page < totalExpenses,
+            hasPreviousPage: page > 1,
+            nextPage:page+1,
+            previousPage:page-1,
+            lastPage:Math.ceil(totalExpenses/ITEMS_PER_PAGE),
+            totalItems: totalExpenses
+        });
     })
 }
 
@@ -53,16 +71,6 @@ exports.editExpense=(req, res, next)=>{
 
 exports.downloadExpenses=(req,res,next)=>{
     Expenses.findAll({where: {userId:req.user.id}}).then(expenses=>{
-        fs.writeFile("expenses.txt", JSON.stringify(expenses), (err) => {
-            if (err)
-              console.log(err);
-            else {
-              console.log("File written successfully\n");
-              console.log("The written has the following contents:");
-              console.log(fs.readFileSync("expenses.txt", "utf8"));
-            }
-        });
-        const file=`${__dirname}/expenses.txt`
         res.status(200).send(JSON.stringify(expenses))
     }).catch(err=>console.log(err))
 }
