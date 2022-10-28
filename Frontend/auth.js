@@ -48,7 +48,7 @@ function checkAuthState(){
     if (state==null||state==undefined||state==''){
         return
     }else if(state.token){
-        location.replace('./index.html')
+        location.replace('./dashboard.html')
     }else{
         return
     }

@@ -28,11 +28,11 @@ rows.addEventListener('input', changePages)
 function checkAuthState(){
     state=JSON.parse(sessionStorage.getItem('auth'))
     if (state==null||state==undefined||state==''){
-        location.replace('./auth.html')
+        location.replace('./index.html')
     }else if (state.token){
         return
     }else{
-        location.replace('./auth.html')
+        location.replace('./index.html')
     }
 }
 
