@@ -1,14 +1,24 @@
 const Expenses=require('../model/expenses')
-const ITEMS_PER_PAGE=3
+var ITEMS_PER_PAGE=3
 exports.showServer=(req, res, next)=>{
     res.send("<h1>Welcome to Expense Tracker's Backend Server</h1>")
 }
 
+exports.updatePages=(req,res,next)=>{
+    console.log(req.params.pages)
+    ITEMS_PER_PAGE=parseInt(req.params.pages)
+    res.status(200).send({updated:true})
+}
+
 exports.getExpenses=async(req, res, next)=>{
     var totalExpenses;
+    let positive=0.00, negative=0.00;
     const page = +req.params.pageNo || 1;
     let totalItems=Expenses.findAll({where: {userId: req.user.id}}).then(response=>{
         totalExpenses=response.length
+        response.map(i=>{
+            (i.amount>0)?positive+=i.amount:negative+=i.amount;
+        })
     }).catch(err=>console.log(err))
 
     await totalItems;
@@ -22,6 +32,8 @@ exports.getExpenses=async(req, res, next)=>{
             hasPreviousPage: page > 1,
             nextPage:page+1,
             previousPage:page-1,
+            positive:positive,
+            negative:negative,
             lastPage:Math.ceil(totalExpenses/ITEMS_PER_PAGE),
             totalItems: totalExpenses
         });

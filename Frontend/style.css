@@ -61,6 +61,30 @@ input.dark{
   transition: background-color .3s ease-in-out;
 }
 
+.rows{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-top: 1rem;
+  /* bottom: 0.25rem; */
+  justify-content: center;
+  align-content: center;
+  /* right: 17.4rem; */
+}
+
+.rows p{
+  padding-top: .2rem;
+  margin: 0 1rem;
+  display: inline-block;
+}
+
+select{
+  width: 3.9rem;
+  height: 2rem;
+  padding: 0 .5rem;
+  border-radius: .5rem;
+}
+
 .pages-container{
   display: flex;
   flex-direction: row;
@@ -219,7 +243,7 @@ label {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  height: 12rem;
+  min-height: 12rem;
   width: 100%;
   align-items: center;
   transition: height .5s ease-in-out;

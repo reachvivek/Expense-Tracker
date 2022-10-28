@@ -10,6 +10,8 @@ router.get('/', expensesController.showServer);
 
 router.get('/expensesData/:pageNo', authenticator.authenticate, expensesController.getExpenses);
 
+router.get('/pages/:pages', expensesController.updatePages)
+
 router.get('/expensesData/:id', expensesController.getExpense)
 
 router.post('/expensesData', authenticator.authenticate, expensesController.addExpense);

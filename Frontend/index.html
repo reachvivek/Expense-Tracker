@@ -49,12 +49,22 @@
         </div>
 
         <h3>History <i id='downloadBtn' class="fa-solid fa-cloud-arrow-down"></i></h3>
-        <ul id="list" class="list">
-            <!-- <li class="minus">
-            <button class="delete-btn"><i style='font-size:22px' class='fas'>&#xf1f8;</i></button>-Rs.400<span>Movie</span>Rent<button class="edit-btn"><i style='font-size:24px' class='far'>&#xf044;</i></button>
-            </li> -->
-        </ul>      
+        <ul id="list" class="list"></ul>      
+        
         <div class="pages-container"></div>
+        <div class="rows">
+            <p>Records per page:</p>
+            <select name="records" id="rows">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
     </div>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
