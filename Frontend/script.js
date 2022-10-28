@@ -1,6 +1,7 @@
 var state;
 //Global variables
 var url="http://localhost:4000/expensesData"
+var downloadUrl="http://localhost:4000/download"
 let UserUrl="http://localhost:4000/users"
 var RazorPayKeyID="rzp_test_MPJj4ZO1IeYlzh"
 var RazorPayKeySecret="XW3SvSuRi3NmhYPADGtZLiqe"
@@ -47,13 +48,34 @@ function checkPremium(){
     }).catch(err=>console.log(err))
 }
 
-
-
 var isPremium=()=>{
     toggleMode()
     darkBtn.style.visibility='hidden'
+    var download=document.getElementById('downloadBtn')
+    download.style.display="inline-block"
+    download.addEventListener('click', downloadExpenses)
 };
 
+function downloadExpenses(e){
+    e.preventDefault()
+    axios({
+        method:'get',
+        url: downloadUrl,
+        headers: {Authorization:state.token},
+        responseType: 'blob', // important
+    }).then(response=>{
+        const href = URL.createObjectURL(response.data);
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', 'expenses.txt'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+        console.log(response)
+    }).catch(err=>console.log(err))
+}
 
 function createPremium(){
     axios({

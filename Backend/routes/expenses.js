@@ -18,4 +18,6 @@ router.delete('/expensesData/:id', expensesController.deleteExpense);
 
 router.put('/expensesData/:id', expensesController.editExpense);
 
+router.get('/download', authenticator.authenticate, expensesController.downloadExpenses)
+
 module.exports = router;

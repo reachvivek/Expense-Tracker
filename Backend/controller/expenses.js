@@ -1,5 +1,5 @@
 const Expenses=require('../model/expenses')
-
+const fs=require('fs')
 exports.showServer=(req, res, next)=>{
     res.send("<h1>Welcome to Expense Tracker's Backend Server</h1>")
 }
@@ -48,5 +48,21 @@ exports.editExpense=(req, res, next)=>{
         res.status(200).send({
             response:response
         })
+    }).catch(err=>console.log(err))
+}
+
+exports.downloadExpenses=(req,res,next)=>{
+    Expenses.findAll({where: {userId:req.user.id}}).then(expenses=>{
+        fs.writeFile("expenses.txt", JSON.stringify(expenses), (err) => {
+            if (err)
+              console.log(err);
+            else {
+              console.log("File written successfully\n");
+              console.log("The written has the following contents:");
+              console.log(fs.readFileSync("expenses.txt", "utf8"));
+            }
+        });
+        const file=`${__dirname}/expenses.txt`
+        res.status(200).send(JSON.stringify(expenses))
     }).catch(err=>console.log(err))
 }
