@@ -22,4 +22,8 @@ router.put('/expensesData/:id', expensesController.editExpense);
 
 router.get('/download', authenticator.authenticate, expensesController.downloadExpenses)
 
+router.get('/downloadHistory', authenticator.authenticate, expensesController.showHistory)
+
+router.get('/leaderboard', expensesController.leaderboard)
+
 module.exports = router;

@@ -10,63 +10,88 @@
   </head>
   <body>
     <i id='logout' class="fa-solid fa-arrow-right-from-bracket"></i>
-    <button id="premium">Buy Premium</button>
-    <h2>Expense Tracker</h2>
-    <div class="container">
-        <div class="inc-exp-container">
-            <div>
-                <h4>Total Income</h4>
-                <p id="money-plus" class="money plus">₹0.00</p>
-            </div>
-            <div>
-                <h4>Total Expense</h4>
-                <p id="money-minus" class="money minus">₹0.00</p>
-            </div>
-        </div>
-        <div class="row-container">
-            <form id="form" class="row-container" >
-                <div class="form-control">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" placeholder="₹" />
+    <div class="row">
+        <!-- Left Column For Managing Expenses -->
+        <div class="column left">
+            <button id="premium">Buy Premium</button>
+            <h2>Expense Tracker</h2>
+            <div class="container">
+                <div class="inc-exp-container">
+                    <div>
+                        <h4>Total Income</h4>
+                        <p id="money-plus" class="money plus">₹0.00</p>
+                    </div>
+                    <div>
+                        <h4>Total Expense</h4>
+                        <p id="money-minus" class="money minus">₹0.00</p>
+                    </div>
                 </div>
-                <div class="form-control">
-                    <label for="text">Description</label>
-                    <input type="text" id="desc" placeholder="" />
+                <div class="row-container">
+                    <form id="form" class="row-container" >
+                        <div class="form-control">
+                            <label for="amount">Amount</label>
+                            <input type="number" id="amount" placeholder="₹" />
+                        </div>
+                        <div class="form-control">
+                            <label for="text">Description</label>
+                            <input type="text" id="desc" placeholder="" />
+                        </div>
+                        <div class="form-control">
+                            <label for="text">Category</label>
+                            <input type="text" list="type" id="catg" placeholder="Select" />
+                        </div>
+                        <datalist id="type">
+                            <option value="Movie">
+                            <option value="Food Order">
+                            <option value="Rent">
+                            <option value="Bill">
+                            <option value="EMI">
+                        </datalist>
+                        <button id="addBtn" class="btn">Add Expense</button>
+                    </form>
                 </div>
-                <div class="form-control">
-                    <label for="text">Category</label>
-                    <input type="text" list="type" id="catg" placeholder="Select" />
-                </div>
-                <datalist id="type">
-                    <option value="Movie">
-                    <option value="Food Order">
-                    <option value="Rent">
-                    <option value="Bill">
-                    <option value="EMI">
-                  </datalist>
-                <button id="addBtn" class="btn">Add Expense</button>
-            </form>
-        </div>
 
-        <h3>History <i id='downloadBtn' class="fa-solid fa-cloud-arrow-down"></i></h3>
-        <ul id="list" class="list"></ul>      
-        
-        <div class="pages-container"></div>
-        <div class="rows">
-            <p>Records per page:</p>
-            <select name="records" id="rows">
-                <option value="3">3</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
+                <div id="history-container" class="popup-container">
+                    <div class="popup">
+                        <button id="close">x</button>
+                        <h1>Download History</h1>
+                        <ul id="download-history">
+                            <!-- <li><p>No Downloads Yet</p></li> -->
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>History <i id='downloadBtn' class="fa-solid fa-cloud-arrow-down"></i><i id='historyBtn' class="fa-solid fa-clock-rotate-left"></i></h3>
+                <ul id="list" class="list"></ul>      
+                
+                <div class="pages-container"></div>
+                <div class="rows">
+                    <p>Records per page:</p>
+                    <select name="records" id="rows">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- Right Column For Leaderboard -->
+        <div class="column right">
+            <h2>Leaderboard</h2>
+            <div class="users">
+                <ul class="users-list">
+                    
+                </ul>
+            </div>
         </div>
     </div>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="script.js"></script>
   </body>
