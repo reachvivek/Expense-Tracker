@@ -350,6 +350,7 @@ function displayList(e) {
     }).then(res=>{
         if (res.data.response==0 || !res.data.response){
             document.querySelector('h3').style.visibility="hidden"
+            checkPremium()
             return
         }
         else{
