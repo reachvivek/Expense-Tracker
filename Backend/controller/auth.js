@@ -1,11 +1,11 @@
 var jwt = require('jsonwebtoken');
-const Users=require('../model/users')
+const User=require('../model/users')
 
 exports.authenticate=(req, res, next)=>{
     try{
         const token=req.header('Authorization')
         const decoded=jwt.verify(token, 'expenseTrackerToken')
-        Users.findOne({where: {email:decoded.email}}).then(response=>{
+        User.findOne({'email':decoded.email}).then(response=>{
             req.user=response;
             next()
         }).catch(err=>console.log(err))

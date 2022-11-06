@@ -1,4 +1,4 @@
-const Users=require('../model/users')
+const User=require('../model/users')
 var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -11,21 +11,29 @@ exports.createUser=(req, res, next)=>{
     console.log(req.body)
     bcrypt.hash(req.body.password, saltRounds).then((hash)=>{
         console.log(hash)
-        Users.findOrCreate({
-            where: {email:req.body.email},
-            defaults: {
-                name: req.body.name,
-                password: hash,
-                isPremium: false
-        }}).then(response=>{
-            res.status(201).send(response)
-        }).catch(err=>console.log(err))
+        User.findOne({'email':req.body.email})
+        .then(response=>{
+            if (!response){
+                const user=new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: hash,
+                    isPremium: false 
+                })
+                user.save().then(result=>{
+                    res.status(201).send(result)
+                })
+            }
+            else{
+                res.status(201).send([response, false])
+            }
+        })
     });
 }
 
 exports.findUser=(req, res, next)=>{
     const creds=JSON.parse(req.params.creds)
-    Users.findOne({where: {email:creds.email}})
+    User.findOne({'email': creds.email})
     .then(response=>{
         if (response==null || response==''){
             res.status(200).send({code:0})
@@ -42,7 +50,7 @@ exports.findUser=(req, res, next)=>{
 }
 
 exports.updateUser=(req, res, next)=>{
-    Users.findOne({where: {email:req.user.email}}).then(user=>{
+    User.findOne({'email':req.user.email}).then(user=>{
         user.isPremium=true
         return user.save()
     }).catch(err=>console.log(err)).then(response=>{

@@ -1,22 +1,16 @@
-const Sequelize=require('sequelize')
+const mongoose=require('mongoose')
 
-const sequelize=require('../util/database')
+const Schema=mongoose.Schema
 
-const DownloadHistory=sequelize.define('downloadhistory', {
-    id:{
-        type: Sequelize.INTEGER,
-        allowedNull: false,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    link:{
-        type: Sequelize.TEXT,
-        allowedNull:false
-    },
-    userId:{
-        type: Sequelize.STRING,
-        allowedNull: false
-    }
+const downloadSchema=new Schema({
+  link:{
+    type: String,
+    required: true
+  },
+  userId:{
+    type: Schema.Types.ObjectId,
+    required: true
+  }
 })
 
-module.exports=DownloadHistory;
+module.exports=mongoose.model('DownloadHistory', downloadSchema);

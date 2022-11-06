@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const ForgotPassword=require('../model/forgotPassword')
 const Users=require('../model/users')
 const { v4: uuidv4 } = require('uuid');
-const url="https://expense-tracker-nodejs-app.herokuapp.com/resetPassword/"
+const url="http://localhost:4000/resetPassword/"
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
