@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express=require('express')
 const cors=require('cors')
 const helmet=require('helmet')
@@ -6,7 +7,7 @@ const app=express();
 
 const mongoose=require('mongoose');
 
-const uri='mongodb+srv://admin:Ebk8r1r6Aa1ZFlbn@expense-tracker.3umwxfw.mongodb.net/expense-tracker?retryWrites=true&w=majority'
+const uri=`mongodb+srv://admin:${process.env.MONGO_PWD}@expense-tracker.3umwxfw.mongodb.net/expense-tracker?retryWrites=true&w=majority`
 
 const expensesRoutes=require('./routes/expenses');
 const authRoutes=require('./routes/users');
@@ -23,6 +24,6 @@ app.use(authRoutes)
 mongoose.connect(uri)
 .then(result=>{
     app.listen(process.env.PORT || 4000, ()=>{
-        console.log("Server started running on Port: 4000")
+        console.log(`Server started running on Port: ${process.env.PORT||4000}`)
     })
 })

@@ -2,7 +2,7 @@ const express = require('express');
 
 const usersController = require('../controller/users');
 const authenticator=require('../controller/auth')
-// const mailer=require('../controller/mailer')
+const mailer=require('../controller/mailer')
 
 const router = express.Router();
 
@@ -14,10 +14,10 @@ router.put('/users', authenticator.authenticate, usersController.updateUser)
 
 router.get('/users', authenticator.authenticate, usersController.isPremium)
 
-// router.get('/forgotPassword/:email', mailer.sendMail)
+router.get('/forgotPassword/:email', mailer.sendMail)
 
-// router.get('/resetPassword/:uuid', mailer.resetPassword)
+router.get('/resetPassword/:uuid', mailer.resetPassword)
 
-// router.post('/resetPassword/:uuid', mailer.updatePassword)
+router.post('/resetPassword/:uuid', mailer.updatePassword)
 
 module.exports = router;
